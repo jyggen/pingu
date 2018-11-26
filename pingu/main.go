@@ -142,9 +142,6 @@ func (p *Pingu) Run() {
 			}
 
 			c.Start()
-			for _, e := range c.Entries() {
-				fmt.Printf("%+v\n", e)
-			}
 		case *slack.DisconnectedEvent:
 			p.logger.Info("Connection lost")
 			c.Stop()
