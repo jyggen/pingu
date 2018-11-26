@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/andygrunwald/go-jira"
-	"github.com/jyggen/pingu"
+	"github.com/jyggen/pingu/pingu"
 	"github.com/nlopes/slack"
 	"github.com/spf13/viper"
 	"regexp"
@@ -35,7 +35,7 @@ func New(c *viper.Viper) pingu.Plugin {
 	client, _ := jira.NewClient(httpClient, c.GetString("jira.base_url"))
 
 	return pingu.Plugin(&plugin{
-		Client: client,
+		Client:  client,
 		baseUrl: c.GetString("jira.base_url"),
 	})
 }
@@ -51,8 +51,8 @@ func (pl *plugin) Commands() pingu.Commands {
 	return pingu.Commands{
 		&pingu.Command{
 			Description: "Retrieves one or multiple issues from JIRA.",
-			Func: pl.postJiraIssue,
-			Trigger: commandRegex,
+			Func:        pl.postJiraIssue,
+			Trigger:     commandRegex,
 		},
 	}
 }

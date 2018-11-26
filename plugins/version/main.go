@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/jyggen/pingu"
+	"github.com/jyggen/pingu/pingu"
 	"github.com/nlopes/slack"
 	"github.com/spf13/viper"
 	"regexp"
