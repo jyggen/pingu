@@ -23,7 +23,7 @@ type Pingu struct {
 	builtAt     time.Time
 	connectedAt time.Time
 	config      *viper.Viper
-	latency time.Duration
+	latency     time.Duration
 	logger      *logrus.Logger
 	name        string
 	plugins     Plugins
@@ -33,8 +33,8 @@ type Pingu struct {
 }
 
 type Task struct {
-	Func        func(pi *Pingu)
-	Interval    time.Duration
+	Func     func(pi *Pingu)
+	Interval time.Duration
 }
 
 type Tasks []*Task
@@ -111,10 +111,10 @@ func (p *Pingu) Run() {
 		plugin := plugin
 		for _, task := range plugin.Tasks() {
 			task := task
-			if err := c.AddFunc(fmt.Sprintf("@every %s", task.Interval.String()), func () {
+			if err := c.AddFunc(fmt.Sprintf("@every %s", task.Interval.String()), func() {
 				task.Func(p)
 				p.logger.WithFields(logrus.Fields{
-					"plugin":  plugin.Name(),
+					"plugin": plugin.Name(),
 				}).Info("Task executed")
 			}); err != nil {
 				p.logger.Fatal(err)
@@ -136,7 +136,7 @@ func (p *Pingu) Run() {
 					task := task
 					task.Func(p)
 					p.logger.WithFields(logrus.Fields{
-						"plugin":  plugin.Name(),
+						"plugin": plugin.Name(),
 					}).Info("Task executed")
 				}
 			}
