@@ -9,6 +9,6 @@ Pingu is a simple and pluggable Slack bot written in Go.
 - Advent of Code
 - Help
 - Jira
-- Pingu
+- Ping
 - Uptime
 - Version
