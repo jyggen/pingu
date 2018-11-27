@@ -39,6 +39,19 @@ type Task struct {
 
 type Tasks []*Task
 
+var builtAt string
+var version string
+
+func init() {
+	if builtAt == "" {
+		builtAt = time.Now().Format(time.RFC3339)
+	}
+
+	if version == "" {
+		version = "dev"
+	}
+}
+
 func New(config *viper.Viper, logger *logrus.Logger) *Pingu {
 	factories, err := LoadPlugins(config.GetString("pingu.plugin_path"))
 
@@ -60,14 +73,21 @@ func New(config *viper.Viper, logger *logrus.Logger) *Pingu {
 
 	api := slack.New(config.GetString("slack.token"))
 	rtm := api.NewRTM()
+	builtAtTime, err := time.Parse(time.RFC3339, builtAt)
+
+	if err != nil {
+		logger.Fatal(err)
+	}
 
 	return &Pingu{
+		builtAt:   builtAtTime,
 		config:    config,
 		logger:    logger,
 		name:      "Pingu",
 		plugins:   plugins,
 		rtm:       rtm,
 		startedAt: time.Now(),
+		version:   version,
 	}
 }
 
@@ -100,6 +120,11 @@ func (p *Pingu) Reply(ev *slack.MessageEvent, msg string) {
 }
 
 func (p *Pingu) Run() {
+	p.logger.WithFields(logrus.Fields{
+		"builtAt": p.builtAt,
+		"version": p.version,
+	}).Info("Pingu started")
+
 	c := cron.New()
 	w := p.logger.Writer()
 
