@@ -55,7 +55,7 @@ func generateHelpOutput(pi *pingu.Pingu) string {
 
 		for _, cmd := range pl.Commands() {
 			trigger := cmd.Trigger.String()
-			output += fmt.Sprintf("%s: %s\n", trigger[1:len(trigger)-1], cmd.Description)
+			output += fmt.Sprintf("%s: %s\n", trigger, cmd.Description)
 		}
 
 		output += "\n"
