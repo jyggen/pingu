@@ -87,6 +87,52 @@ func (pl *plugin) Version() string {
 	return version
 }
 
+func (pl *plugin) announceJoined(pi *pingu.Pingu, a leaderboard, b leaderboard) {
+	availableStars := calculateAvailableStars(time.Now(), b.Year)
+
+Loop:
+	for _, our := range b.Members {
+		for _, their := range a.Members {
+			if our.Id == their.Id {
+				continue Loop
+			}
+		}
+
+		var starsLabel string
+
+		if our.TotalStars != 1 {
+			starsLabel = "stars"
+		} else {
+			starsLabel = "star"
+		}
+
+		pi.Say(fmt.Sprintf(
+			"Noot! Noot! _%s_ has joined our ranks, starting at position *%d* with *%d %s* (%.2f%%) collected.",
+			our.Name,
+			our.Position,
+			our.TotalStars,
+			starsLabel,
+			float64(our.TotalStars)/float64(availableStars)*100,
+		), pl.channel)
+	}
+}
+
+func (pl *plugin) announceLeft(pi *pingu.Pingu, a leaderboard, b leaderboard) {
+Loop:
+	for _, their := range a.Members {
+		for _, our := range b.Members {
+			if their.Id == our.Id {
+				continue Loop
+			}
+		}
+
+		pi.Say(fmt.Sprintf(
+			"Noot! Noot! It seems like _%s_ has left our ranks. The leaderboards have been recalculated.",
+			their.Name,
+		), pl.channel)
+	}
+}
+
 func (pl *plugin) announceChanges(pi *pingu.Pingu, a leaderboard, b leaderboard) {
 	availableStars := calculateAvailableStars(time.Now(), b.Year)
 
@@ -137,37 +183,6 @@ OurLoop:
 				continue OurLoop
 			}
 		}
-
-		var starsLabel string
-
-		if our.TotalStars != 1 {
-			starsLabel = "stars"
-		} else {
-			starsLabel = "star"
-		}
-
-		pi.Say(fmt.Sprintf(
-			"Noot! Noot! _%s_ has joined our ranks, starting at position *%d* with *%d %s* (%.2f%%) collected.",
-			our.Name,
-			our.Position,
-			our.TotalStars,
-			starsLabel,
-			float64(our.TotalStars)/float64(availableStars)*100,
-		), pl.channel)
-	}
-
-TheirLoop:
-	for _, their := range a.Members {
-		for _, our := range b.Members {
-			if their.Id == our.Id {
-				continue TheirLoop
-			}
-		}
-
-		pi.Say(fmt.Sprintf(
-			"Noot! Noot! It seems like _%s_ has left our ranks. The leaderboards have been recalculated.",
-			their.Name,
-		), pl.channel)
 	}
 }
 
@@ -320,5 +335,12 @@ Loop:
 	}
 
 	wg.Wait()
+	before := *pl.global
 	pl.refreshGlobalLeaderboard()
+	after := *pl.global
+
+	if len(before.Members) != 0 {
+		pl.announceJoined(pi, before, after)
+		pl.announceLeft(pi, before, after)
+	}
 }
