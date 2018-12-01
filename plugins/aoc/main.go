@@ -232,7 +232,7 @@ func (pl *plugin) postLeaderboard(pi *pingu.Pingu, ev *slack.MessageEvent) {
 
 	match := leaderboardRegex.FindStringSubmatch(ev.Text)
 
-	if len(match) == 2 && match[1] != "0" {
+	if match[1] != "" {
 		year, _ := strconv.Atoi(match[1])
 
 		for _, l := range pl.leaderboards {
