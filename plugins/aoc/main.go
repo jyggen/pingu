@@ -305,10 +305,14 @@ Loop:
 
 	for _, l := range pl.leaderboards {
 		go func(l *leaderboard) {
+			before := *l
 			err := l.Refresh(pl.client)
+			after := *l
 
 			if err != nil {
 				pi.Logger().Error(err)
+			} else if len(before.Members) != 0 {
+				pl.announceChanges(pi, before, after)
 			}
 
 			wg.Done()
@@ -316,12 +320,5 @@ Loop:
 	}
 
 	wg.Wait()
-
-	before := *pl.global
 	pl.refreshGlobalLeaderboard()
-	after := *pl.global
-
-	if len(before.Members) != 0 {
-		pl.announceChanges(pi, before, after)
-	}
 }
