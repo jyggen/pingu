@@ -78,7 +78,7 @@ func (pl *plugin) Tasks() pingu.Tasks {
 	return pingu.Tasks{
 		&pingu.Task{
 			Func:     pl.refreshLeaderboards,
-			Interval: time.Hour,
+			Interval: time.Minute * 5,
 		},
 	}
 }
