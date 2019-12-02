@@ -4,12 +4,14 @@ import (
 	"github.com/jyggen/pingu/pingu"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
+  "strings"
 )
 
 func main() {
 	logger := logrus.New()
 	config := viper.New()
 
+	config.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 	config.AutomaticEnv()
 	config.SetConfigName("pingu")
 	config.AddConfigPath(".")
