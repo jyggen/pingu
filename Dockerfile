@@ -5,12 +5,12 @@ COPY go.mod go.sum ./
 RUN go mod download
 COPY pingu/ pingu/
 COPY plugins/ plugins/
-ARG VERSION
+ARG SOURCE_COMMIT
 RUN for d in plugins/*/ ; do \
-        go build -v -ldflags "-X main.builtAt=`date -u +"%Y-%m-%dT%H:%M:%SZ"` -X main.version=${VERSION}" -buildmode=plugin -o plugins/$(basename $d).so $d*; \
+        go build -v -ldflags "-X main.builtAt=`date -u +"%Y-%m-%dT%H:%M:%SZ"` -X main.version=${SOURCE_COMMIT}" -buildmode=plugin -o plugins/$(basename $d).so $d*; \
     done
 COPY pingu.go .
-RUN go build -v -ldflags "-X main.builtAt=`date -u +"%Y-%m-%dT%H:%M:%SZ"` -X main.version=${VERSION}" -o bin/pingu pingu.go && chmod +x bin/pingu
+RUN go build -v -ldflags "-X main.builtAt=`date -u +"%Y-%m-%dT%H:%M:%SZ"` -X main.version=${SOURCE_COMMIT}" -o bin/pingu pingu.go && chmod +x bin/pingu
 
 FROM alpine
 RUN mkdir /pingu /pingu/plugins
