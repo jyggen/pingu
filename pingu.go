@@ -4,7 +4,7 @@ import (
 	"github.com/jyggen/pingu/pingu"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-  "strings"
+	"strings"
 )
 
 func main() {

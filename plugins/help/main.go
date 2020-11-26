@@ -51,21 +51,21 @@ func generateHelpOutput(pi *pingu.Pingu) string {
 	output := "Here's a list of all available commands:\n\n```\n"
 
 	for _, pl := range pi.Plugins() {
-	  version := pl.Version()
+		version := pl.Version()
 
-	  if version == "" {
-	    version = "dev"
-    }
+		if version == "" {
+			version = "dev"
+		}
 
-    isHash, _ := regexp.MatchString("^[a-f0-9]+$", version)
+		isHash, _ := regexp.MatchString("^[a-f0-9]+$", version)
 
-    if version == "dev" {
-      version = "development build"
-    } else if isHash {
-      version = "rev. " + version[:7]
-    } else {
-      version = "ver. " + version
-    }
+		if version == "dev" {
+			version = "development build"
+		} else if isHash {
+			version = "rev. " + version[:7]
+		} else {
+			version = "ver. " + version
+		}
 
 		output += fmt.Sprintf("%s (%s):\n", pl.Name(), version)
 
