@@ -99,6 +99,21 @@ func (p *Pingu) ConnectedAt() time.Time {
 	return p.connectedAt
 }
 
+func (p *Pingu) FriendlyVersion() string {
+  friendlyVersion := p.version
+  isHash, _ := regexp.MatchString("^[a-f0-9]+$", friendlyVersion)
+
+  if friendlyVersion == "dev" {
+    friendlyVersion = "development build"
+  } else if isHash {
+    friendlyVersion = "rev. " + friendlyVersion[:7]
+  } else {
+    friendlyVersion = "ver. " + friendlyVersion
+  }
+
+  return friendlyVersion
+}
+
 func (p *Pingu) Latency() time.Duration {
 	return p.latency
 }

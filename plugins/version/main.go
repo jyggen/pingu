@@ -28,7 +28,7 @@ func (pl *plugin) Commands() pingu.Commands {
 		&pingu.Command{
 			Description: "Reports the version of myself I'm currently running.",
 			Func: func(pi *pingu.Pingu, ev *slack.MessageEvent) {
-				pi.Reply(ev, fmt.Sprintf("I'm currently running Pingu version %s, built at %s.", pi.Version(), pi.BuiltAt()))
+				pi.Reply(ev, fmt.Sprintf("I'm currently running Pingu version %s, built at %s.", pi.FriendlyVersion(), pi.BuiltAt()))
 			},
 			Trigger: regexp.MustCompile("^!version$"),
 		},
