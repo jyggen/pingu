@@ -264,11 +264,6 @@ func (pl *plugin) postLeaderboard(pi *pingu.Pingu, ev *slack.MessageEvent) {
 		board = pl.global
 	}
 
-    if board == nil {
-    	pi.Reply(ev,"Noot! Noot! I was unable to retrieve that leaderboard!")
-    	return
-  	}
-
 	pi.Say(pl.buildLeaderboard(board), ev.Channel)
 }
 
