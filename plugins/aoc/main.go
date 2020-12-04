@@ -80,6 +80,10 @@ func (pl *plugin) Tasks() pingu.Tasks {
 			Func:     pl.refreshLeaderboards,
 			Interval: time.Minute * 15,
 		},
+		&pingu.Task{
+			Func: pl.announceNewDay,
+			Spec: "0 6 1-25 DEC *",
+		},
 	}
 }
 
@@ -131,6 +135,16 @@ Loop:
 			their.Name,
 		), pl.channel)
 	}
+}
+
+func (pl *plugin) announceNewDay(pi *pingu.Pingu) {
+	year, _, day := time.Now().Date()
+
+	pi.Say(fmt.Sprintf(
+		"Noot! Noot! <https://adventofcode.com/%[1]d/day/%[2]d|Day %[2]d of %[1]d is now available!> Please keep spoilers to a minimum and instead use a thread on this very message to discuss today's challenge. Happy coding!",
+		year,
+		day,
+	), pl.channel)
 }
 
 func (pl *plugin) announceChanges(pi *pingu.Pingu, a leaderboard, b leaderboard) {

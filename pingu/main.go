@@ -35,6 +35,7 @@ type Pingu struct {
 type Task struct {
 	Func     func(pi *Pingu)
 	Interval time.Duration
+	Spec     string
 }
 
 type Tasks []*Task
@@ -151,7 +152,13 @@ func (p *Pingu) Run() {
 		plugin := plugin
 		for _, task := range plugin.Tasks() {
 			task := task
-			if err := c.AddFunc(fmt.Sprintf("@every %s", task.Interval.String()), func() {
+			spec := task.Spec
+
+			if spec == "" {
+				spec = fmt.Sprintf("@every %s", task.Interval.String())
+			}
+
+			if err := c.AddFunc(spec, func() {
 				task.Func(p)
 				p.logger.WithFields(logrus.Fields{
 					"plugin": plugin.Name(),
