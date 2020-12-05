@@ -17,5 +17,5 @@ RUN mkdir /pingu /pingu/plugins
 WORKDIR /pingu
 COPY --from=build /pingu/bin/pingu pingu
 COPY --from=build /pingu/plugins/*.so ./plugins/
-ENV AOC_TIMEOUT=5 JIRA_TIMEOUT=5 PINGU_PLUGIN_PATH=/pingu/plugins
+ENV AOC_TIMEOUT=5 JIRA_TIMEOUT=5 PINGU_PLUGIN_PATH=/pingu/plugins CRON_TZ=UTC
 CMD ["/pingu/pingu"]

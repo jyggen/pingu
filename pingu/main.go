@@ -177,6 +177,11 @@ func (p *Pingu) Run() {
 			for _, plugin := range p.plugins {
 				plugin := plugin
 				for _, task := range plugin.Tasks() {
+				  // Specs are meant to run at specific times.
+				  if task.Spec != "" {
+				    return
+          }
+
 					task := task
 					task.Func(p)
 					p.logger.WithFields(logrus.Fields{
