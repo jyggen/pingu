@@ -82,7 +82,7 @@ func (pl *plugin) Tasks() pingu.Tasks {
 		},
 		&pingu.Task{
 			Func: pl.announceNewDay,
-			Spec: "0 6 1-25 DEC *",
+			Spec: "0 5 1-25 DEC *",
 		},
 	}
 }
