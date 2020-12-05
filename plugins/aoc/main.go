@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/viper"
 	"net/http"
 	"regexp"
+	"sort"
 	"strconv"
 	"strings"
 	"sync"
@@ -208,6 +209,8 @@ func (pl *plugin) buildChangeMessage(l starList) string {
 	}
 
 	stars := make([]string, numOfStars)
+
+	sort.Sort(ByDate(l))
 
 	for i, s := range l {
 		stars[i] = fmt.Sprintf("Day %d Part %d (%d)", s.Day, s.Part, s.Year)

@@ -136,3 +136,11 @@ func (l *leaderboard) Sort() {
 		skip++
 	}
 }
+
+type ByDate starList
+
+func (a ByDate) Len() int      { return len(a) }
+func (a ByDate) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
+func (a ByDate) Less(i, j int) bool {
+	return a[i].Year < a[j].Year || (a[i].Year == a[j].Year && a[i].Day < a[j].Day) || (a[i].Year == a[j].Year && a[i].Day == a[j].Day && a[i].Part < a[j].Part)
+}
