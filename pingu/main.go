@@ -3,10 +3,9 @@ package pingu
 import (
 	"fmt"
 	"github.com/nlopes/slack"
-	"github.com/robfig/cron"
+	"github.com/robfig/cron/v3"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-	"log"
 	"regexp"
 	"time"
 )
@@ -146,8 +145,6 @@ func (p *Pingu) Run() {
 
 	defer w.Close()
 
-	c.ErrorLog = log.New(w, "", 0)
-
 	for _, plugin := range p.plugins {
 		plugin := plugin
 		for _, task := range plugin.Tasks() {
@@ -158,7 +155,7 @@ func (p *Pingu) Run() {
 				spec = fmt.Sprintf("@every %s", task.Interval.String())
 			}
 
-			if err := c.AddFunc(spec, func() {
+			if _, err := c.AddFunc(spec, func() {
 				task.Func(p)
 				p.logger.WithFields(logrus.Fields{
 					"plugin": plugin.Name(),

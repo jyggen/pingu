@@ -80,7 +80,7 @@ func TestCalculateDifference(t *testing.T) {
 			t.Parallel()
 
 			if actual := calculateDifference(testCase.a, testCase.b); !reflect.DeepEqual(testCase.expected, actual) {
-				t.Errorf("calculateDifference() was incorrect, got: %v, want %v.", actual, testCase.expected)
+				t.Errorf("calculateDifference() was incorrect, got: %+v, want %+v.", actual, testCase.expected)
 			}
 		})
 	}

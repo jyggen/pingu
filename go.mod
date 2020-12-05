@@ -13,7 +13,7 @@ require (
 	github.com/mitchellh/mapstructure v1.1.2 // indirect
 	github.com/nlopes/slack v0.4.0
 	github.com/pkg/errors v0.8.0
-	github.com/robfig/cron v0.0.0-20180505203441-b41be1df6967
+	github.com/robfig/cron/v3 v3.0.1
 	github.com/sirupsen/logrus v1.2.0
 	github.com/spf13/cast v1.3.0 // indirect
 	github.com/spf13/pflag v1.0.3 // indirect
