@@ -27,6 +27,11 @@ func calculateAvailableStars(now time.Time, onlyYear int) int {
 			continue
 		}
 
+		if now.Day() > 25 {
+			stars += 50
+			continue
+		}
+
 		stars += now.Day() * 2
 
 		dayUnlockedAt := time.Date(now.Year(), now.Month(), now.Day(), 5, 0, 0, 0, time.UTC)

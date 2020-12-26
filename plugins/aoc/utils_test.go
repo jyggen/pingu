@@ -28,6 +28,9 @@ func TestCalculateAvailableStars(t *testing.T) {
 		{time.Date(2018, time.December, 10, 0, 0, 0, 0, time.UTC), 0, 168},
 		{time.Date(2018, time.December, 10, 0, 0, 0, 0, newYork), 0, 170},
 		{time.Date(2018, time.December, 25, 0, 0, 0, 0, newYork), 0, 200},
+		{time.Date(2020, time.December, 26, 0, 0, 0, 0, newYork), 0, 300},
+		{time.Date(2020, time.December, 10, 0, 0, 0, 0, newYork), 2020, 20},
+		{time.Date(2020, time.December, 26, 0, 0, 0, 0, newYork), 2020, 50},
 	}
 
 	for _, testCase := range testCases {
