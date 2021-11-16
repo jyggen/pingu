@@ -67,10 +67,8 @@ func (l *leaderboard) Refresh(c *client) error {
 					continue
 				}
 
-				completedAt, _ := strconv.Atoi(data["get_star_ts"])
-
 				stars = append(stars, &star{
-					CompletedAt: time.Unix(int64(completedAt), 0),
+					CompletedAt: time.Unix(int64(data["get_star_ts"]), 0),
 					Day:         day,
 					Part:        part,
 					Year:        l.Year,
