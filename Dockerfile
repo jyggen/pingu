@@ -7,7 +7,6 @@ COPY pingu/ pingu/
 COPY plugins/ plugins/
 ARG SOURCE_COMMIT
 RUN for d in plugins/*/ ; do \
-        echo "${d}" \
         go build -v -trimpath -ldflags "-X main.version=${SOURCE_COMMIT}" -buildmode=plugin -o plugins/$(basename $d).so $d*; \
     done
 COPY pingu.go .
