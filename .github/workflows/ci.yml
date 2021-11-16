@@ -27,6 +27,6 @@ jobs:
                 uses: docker/build-push-action@v2
                 with:
                     build-args: |
-                        SOURCE_COMMIT=${GITHUB_SHA}
+                        SOURCE_COMMIT=${{ github.sha }}
                     push: true
                     tags: jyggen/pingu:latest

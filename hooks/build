@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-docker build --build-arg SOURCE_COMMIT=$SOURCE_COMMIT -f $DOCKERFILE_PATH -t $IMAGE_NAME .
