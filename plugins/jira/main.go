@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/andygrunwald/go-jira"
 	"github.com/jyggen/pingu/pingu"
-	"github.com/nlopes/slack"
+	"github.com/slack-go/slack"
 	"github.com/spf13/viper"
 	"regexp"
 	"strings"

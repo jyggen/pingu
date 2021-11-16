@@ -2,9 +2,9 @@ package pingu
 
 import (
 	"fmt"
-	"github.com/nlopes/slack"
 	"github.com/robfig/cron/v3"
 	"github.com/sirupsen/logrus"
+	"github.com/slack-go/slack"
 	"github.com/spf13/viper"
 	"regexp"
 	"time"
@@ -221,13 +221,17 @@ func (p *Pingu) Say(msg string, ch string) {
 }
 
 func (p *Pingu) SendAttachments(attachments []slack.Attachment, msg string, ch string) {
-	_, _, err := p.rtm.PostMessage(ch, "", slack.PostMessageParameters{
-		AsUser:      true,
-		LinkNames:   1,
-		UnfurlLinks: false,
-		UnfurlMedia: true,
-		Attachments: attachments,
-	})
+	params := slack.NewPostMessageParameters()
+
+	params.LinkNames = 1
+
+	_, _, err := p.rtm.PostMessage(
+		ch,
+		slack.MsgOptionPostMessageParameters(params),
+		slack.MsgOptionAsUser(true),
+		slack.MsgOptionDisableLinkUnfurl(),
+		slack.MsgOptionAttachments(attachments...),
+	)
 
 	if err != nil {
 		p.logger.Error(err)

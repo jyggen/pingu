@@ -15,13 +15,13 @@ type apiResponse struct {
 }
 
 type memberResponse struct {
-	Id                 string                            `json:"id"`
-	GlobalScore        int                               `json:"global_score"`
-	LastStarTs         interface{}                       `json:"last_star_ts"`
-	LocalScore         int                               `json:"local_score"`
-	Name               string                            `json:"name"`
-	CompletionDayLevel map[int]map[int]map[string]string `json:"completion_day_level"`
-	Stars              int                               `json:"stars"`
+	Id                 string                         `json:"id"`
+	GlobalScore        int                            `json:"global_score"`
+	LastStarTs         interface{}                    `json:"last_star_ts"`
+	LocalScore         int                            `json:"local_score"`
+	Name               string                         `json:"name"`
+	CompletionDayLevel map[int]map[int]map[string]int `json:"completion_day_level"`
+	Stars              int                            `json:"stars"`
 }
 
 type client struct {

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/hako/durafmt"
 	"github.com/jyggen/pingu/pingu"
-	"github.com/nlopes/slack"
+	"github.com/slack-go/slack"
 	"github.com/spf13/viper"
 	"regexp"
 	"time"
