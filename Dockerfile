@@ -7,10 +7,11 @@ COPY pingu/ pingu/
 COPY plugins/ plugins/
 ARG SOURCE_COMMIT
 RUN for d in plugins/*/ ; do \
-        CGO_ENABLED=0 go build -v -trimpath -ldflags "-X main.version=${SOURCE_COMMIT}" -buildmode=plugin -o plugins/$(basename $d).so $d*; \
+        echo "${d}" \
+        go build -v -trimpath -ldflags "-X main.version=${SOURCE_COMMIT}" -buildmode=plugin -o plugins/$(basename $d).so $d*; \
     done
 COPY pingu.go .
-RUN CGO_ENABLED=0 BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` && go build -trimpath -v -ldflags "-X github.com/jyggen/pingu/pingu.builtAt=${BUILD_DATE} -X github.com/jyggen/pingu/pingu.version=${SOURCE_COMMIT}" -o bin/pingu pingu.go && chmod +x bin/pingu
+RUN BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` && go build -trimpath -v -ldflags "-X github.com/jyggen/pingu/pingu.builtAt=${BUILD_DATE} -X github.com/jyggen/pingu/pingu.version=${SOURCE_COMMIT}" -o bin/pingu pingu.go && chmod +x bin/pingu
 
 FROM alpine
 RUN mkdir /pingu /pingu/plugins
