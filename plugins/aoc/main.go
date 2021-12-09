@@ -56,18 +56,6 @@ func (pl *plugin) Commands() pingu.Commands {
 			Func:        pl.postLeaderboard,
 			Trigger:     leaderboardRegex,
 		},
-		&pingu.Command{
-			Description: "Forces a refresh of all leaderboards.",
-			Func: func(pi *pingu.Pingu, ev *slack.MessageEvent) {
-				if ev.Channel != pl.channel {
-					pi.Reply(ev, fmt.Sprintf("Noot! Noot! That command is only available in <#%s>!", pl.channel))
-					return
-				}
-
-				pl.refreshLeaderboards(pi)
-			},
-			Trigger: regexp.MustCompile("^!refresh$"),
-		},
 	}
 }
 
@@ -78,8 +66,12 @@ func (pl *plugin) Name() string {
 func (pl *plugin) Tasks() pingu.Tasks {
 	return pingu.Tasks{
 		&pingu.Task{
-			Func:     pl.refreshLeaderboards,
-			Interval: time.Minute * 15,
+			Func: pl.refreshLeaderboards,
+			Spec: "*/15 * 1-25 DEC *",
+		},
+		&pingu.Task{
+			Func: pl.refreshLeaderboards,
+			Spec: "0 * * JAN-NOV *",
 		},
 		&pingu.Task{
 			Func: pl.announceNewDay,
