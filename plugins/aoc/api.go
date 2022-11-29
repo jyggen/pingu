@@ -3,19 +3,20 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/pkg/errors"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/pkg/errors"
 )
 
 type apiResponse struct {
 	Event   string                 `json:"event"`
 	Members map[int]memberResponse `json:"members"`
-	OwnerId string                 `json:"owner_id"`
+	OwnerId int                    `json:"owner_id"`
 }
 
 type memberResponse struct {
-	Id                 string                         `json:"id"`
+	Id                 int                            `json:"id"`
 	GlobalScore        int                            `json:"global_score"`
 	LastStarTs         interface{}                    `json:"last_star_ts"`
 	LocalScore         int                            `json:"local_score"`
