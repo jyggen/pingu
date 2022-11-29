@@ -2,9 +2,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/jyggen/pingu/pingu"
-	"github.com/slack-go/slack"
-	"github.com/spf13/viper"
 	"net/http"
 	"regexp"
 	"sort"
@@ -12,6 +9,10 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/jyggen/pingu/pingu"
+	"github.com/slack-go/slack"
+	"github.com/spf13/viper"
 )
 
 type plugin struct {
@@ -23,6 +24,7 @@ type plugin struct {
 
 var leaderboardRegex *regexp.Regexp
 var version string
+var lastRefresh time.Time
 
 func init() {
 	leaderboardRegex = regexp.MustCompile("^!leaderboard(?: ([\\d]{4}))?$")
@@ -55,6 +57,23 @@ func (pl *plugin) Commands() pingu.Commands {
 			Description: "Prints either the global leaderboard, or the leaderboard for a specific year.",
 			Func:        pl.postLeaderboard,
 			Trigger:     leaderboardRegex,
+		},
+		&pingu.Command{
+			Description: "Forces a refresh of all leaderboards.",
+			Func: func(pi *pingu.Pingu, ev *slack.MessageEvent) {
+				if time.Now().Add(-time.Minute * 15).Before(lastRefresh) {
+					pi.Reply(ev, "Noot! Noot! The leaderboards were refreshed too recently!")
+					return
+				}
+
+				if ev.Channel != pl.channel {
+					pi.Reply(ev, fmt.Sprintf("Noot! Noot! That command is only available in <#%s>!", pl.channel))
+					return
+				}
+
+				pl.refreshLeaderboards(pi)
+			},
+			Trigger: regexp.MustCompile("^!refresh$"),
 		},
 	}
 }
@@ -353,4 +372,6 @@ Loop:
 		pl.announceJoined(pi, before, after)
 		pl.announceLeft(pi, before, after)
 	}
+
+	lastRefresh = time.Now()
 }
