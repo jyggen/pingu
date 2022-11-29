@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/pkg/errors"
 	"sort"
 	"strconv"
 	"time"
+
+	"github.com/pkg/errors"
 )
 
 type leaderboardList []*leaderboard
@@ -47,8 +48,6 @@ func (l *leaderboard) Refresh(c *client) error {
 	i := 0
 
 	for _, m := range body.Members {
-		memberId, _ := strconv.Atoi(m.Id)
-
 		var lastStarTs int
 
 		switch v := m.LastStarTs.(type) {
@@ -77,7 +76,7 @@ func (l *leaderboard) Refresh(c *client) error {
 		}
 
 		members[i] = &member{
-			Id:          memberId,
+			Id:          m.Id,
 			GlobalScore: m.GlobalScore,
 			LastStarAt:  lastStarAt,
 			LocalScore:  m.LocalScore,
