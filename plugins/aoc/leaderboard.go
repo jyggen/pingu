@@ -97,7 +97,7 @@ func (l *leaderboard) Refresh(c *client) error {
 
 func (l *leaderboard) Sort() {
 	sort.Slice(l.Members, func(i, j int) bool {
-		if l.Members[j].TotalStars == l.Members[i].TotalStars {
+		if l.Members[j].LocalScore == l.Members[i].LocalScore {
 			if l.Members[j].LastStarAt.Equal(l.Members[i].LastStarAt) {
 				if l.Members[j].Name < l.Members[i].Name {
 					return false
@@ -113,24 +113,15 @@ func (l *leaderboard) Sort() {
 			}
 		}
 
-		if l.Members[j].TotalStars > l.Members[i].TotalStars {
+		if l.Members[j].LocalScore > l.Members[i].LocalScore {
 			return false
 		} else {
 			return true
 		}
 	})
 
-	position := 1
-	skip := 0
-
 	for i, m := range l.Members {
-		if i != 0 && m.TotalStars < l.Members[i-1].TotalStars {
-			position += skip
-			skip = 0
-		}
-
-		m.Position = position
-		skip++
+		m.Position = i + 1
 	}
 }
 

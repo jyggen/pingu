@@ -244,6 +244,14 @@ func (pl *plugin) buildLeaderboard(l *leaderboard) string {
 	message := ""
 
 	for _, m := range l.Members {
+		var pointsLabel string
+
+		if m.LocalScore != 1 {
+			pointsLabel = "points"
+		} else {
+			pointsLabel = "point"
+		}
+
 		var starsLabel string
 
 		if m.TotalStars != 1 {
@@ -253,9 +261,11 @@ func (pl *plugin) buildLeaderboard(l *leaderboard) string {
 		}
 
 		message += fmt.Sprintf(
-			"*%d.* _%s_ with *%d %s* (%.2f%%) collected.\n",
+			"*%d.* _%s_ on *%d %s* with *%d %s* (%.2f%%) collected.\n",
 			m.Position,
 			m.Name,
+			m.LocalScore,
+			pointsLabel,
 			m.TotalStars,
 			starsLabel,
 			float64(m.TotalStars)/float64(availableStars)*100,
