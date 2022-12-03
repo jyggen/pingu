@@ -167,12 +167,13 @@ OurLoop:
 		for _, their := range a.Members {
 			if our.Id == their.Id {
 				if our.TotalStars != their.TotalStars {
-					diff := calculateDifference(our.Stars, their.Stars)
-					diffLen := len(diff)
+					diffStars := calculateDifference(our.Stars, their.Stars)
+					diffLen := len(diffStars)
 
 					if diffLen != 0 {
-						starsMessage := pl.buildChangeMessage(diff)
+						starsMessage := pl.buildChangeMessage(diffStars)
 
+						var pointsLabel string
 						var starsLabel string
 
 						if diffLen != 1 {
@@ -191,6 +192,12 @@ OurLoop:
 							message += fmt.Sprintf(", staying at *position %d*", our.Position)
 						}
 
+						if our.LocalScore != 1 {
+							pointsLabel = "points"
+						} else {
+							pointsLabel = "point"
+						}
+
 						if our.TotalStars != 1 {
 							starsLabel = "stars"
 						} else {
@@ -198,7 +205,9 @@ OurLoop:
 						}
 
 						pi.Say(message+fmt.Sprintf(
-							" with *%d %s* (%.2f%%)!",
+							" with *%d %s* and *%d %s* (%.2f%%)!",
+							our.LocalScore,
+							pointsLabel,
 							our.TotalStars,
 							starsLabel,
 							float64(our.TotalStars)/float64(availableStars)*100,
