@@ -233,7 +233,7 @@ func (pl *plugin) buildChangeMessage(l starList) string {
 	sort.Sort(ByDate(l))
 
 	for i, s := range l {
-		stars[i] = fmt.Sprintf("Day %d Part %d (%d)", s.Day, s.Part, s.Year)
+		stars[i] = fmt.Sprintf("Day %d Part %d (%d)_ at _%s", s.Day, s.Part, s.Year, s.CompletedAt.Format("15:04:05"))
 	}
 
 	starsString := strings.Join([]string{
